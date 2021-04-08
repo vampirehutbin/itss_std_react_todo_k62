@@ -29,6 +29,10 @@ function Todo() {
     putItems(newItems);
   };
 
+  const handleAdd = text => {
+    putItems([...items, { key: getKey(), text, done: false }]);
+  };
+
   const [items, putItems] = React.useState([
     /* テストコード 開始 */
     { key: getKey(), text: '日本語の宿題', done: false },
@@ -42,6 +46,7 @@ function Todo() {
       <div className="panel-heading">
         ITSS ToDoアプリ
       </div>
+      <Input onAdd={handleAdd} />
       {items.map(item => (
         <TodoItem
           key={item.key}
