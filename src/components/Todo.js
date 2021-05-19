@@ -20,14 +20,14 @@ import { getKey } from "../lib/util";
 
 function Todo() {
   const [items, putItems, clearItems] = useStorage();
+  
+  const [filter, setFilter] = React.useState('ALL');
 
   const displayItems = items.filter(item => {
     if (filter === 'ALL') return true;
     if (filter === 'TODO') return !item.done;
     if (filter === 'DONE') return item.done;
   });
-
-  const [filter, setFilter] = React.useState('ALL');
 
   const handleCheck = checked => {
     const newItems = items.map(item => {
