@@ -11,6 +11,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+export const auth = firebase.auth();
 const db = firebase.firestore();
 export default firebase;
 
@@ -53,4 +54,29 @@ export const clearFirebaseItem = async (item) => {
   }).catch(function (err) {
     console.log(err);
   });
+};
+
+export const uiConfig = {
+  signInFlow: 'popup',
+  signInSuccessUrl: "/",
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+  ],
+}
+
+export const storeUserInfo = async (user) => {
+  const { uid } = user;
+  const userDoc = await db.collection("users").doc(uid).get();
+  if (!userDoc.exists) {
+    await db.collection("users").doc(uid).set({ name: user.displayName });
+    return {
+      name: user.displayName,
+      id: uid,
+    };
+  } else {
+    return {
+      id: uid,
+      ...userDoc.data(),
+    };
+  }
 };
